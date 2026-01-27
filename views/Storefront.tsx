@@ -102,9 +102,7 @@ const Storefront: React.FC = () => {
         <div className="max-w-[1440px] mx-auto px-6 py-4 flex justify-between items-center">
           <h1 className="text-xl font-black tracking-tighter text-indigo-600 uppercase italic cursor-pointer" onClick={() => setSelectedProduct(null)}>{company?.name}</h1>
           <div className="flex items-center gap-6">
-            <button onClick={() => navigate('/dashboard')} className="text-slate-400 font-black text-[10px] uppercase tracking-widest flex items-center gap-1 hover:text-slate-900 transition-colors">
-              <ArrowLeft size={14} /> Painel Administrador
-            </button>
+            
           </div>
         </div>
       </nav>
