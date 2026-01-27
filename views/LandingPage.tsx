@@ -170,14 +170,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer / Copyright */}
-      <footer className="py-12 border-t border-slate-50 text-center relative">
-        <p className="text-slate-400 text-sm font-medium">
-          © 2024 <span 
-            onClick={handleSecretClick} 
-            className="cursor-pointer select-none hover:text-blue-600 transition-colors underline decoration-dotted"
-          >Vitrine SZ Soluções</span> Enterprise. Imagens nítidas, negócios focados.
-        </p>
-      </footer>
+      
     </div>
   );
 };
