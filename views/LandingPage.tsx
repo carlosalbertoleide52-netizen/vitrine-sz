@@ -161,9 +161,9 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-10 shadow-xl shadow-blue-200">
               <Globe className="text-white" size={32} />
             </div>
-            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">Compras de Produtos</h3>
+            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">IA +Fotos</h3>
             <p className="text-slate-500 font-medium leading-relaxed">
-              Aqui você encontra as ofertas de grandes fornecedores do Brasil para escalar o seu negócio.
+              Aqui a IA analisa e descreve o seu produto na hora de cadastrar o produto.
             </p>
           </div>
         </div>
