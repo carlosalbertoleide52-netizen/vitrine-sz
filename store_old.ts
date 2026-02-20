@@ -160,22 +160,6 @@ export const getCompanyBySubdomain = async (subdomain: string): Promise<{data: C
   const { data, error } = await supabase.from('companies').select('*').eq('subdomain', subdomain.toLowerCase()).maybeSingle();
   if (error) return { data: null, error };
   return { data: data ? mapCompany(data) : null, error: null };
-}
-
-
-export const generateSafeSubdomain = (name: string) => {
-  const base = name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "")
-    .slice(0, 20);
-
-  if (!base) {
-    return "loja" + Math.floor(Math.random() * 10000);
-  }
-
-  return base;
 };
 
 export const registerCompanyAndAdmin = async (companyName: string, subdomain: string, adminName: string, adminEmail: string, userId: string) => {
@@ -193,4 +177,9 @@ export const registerCompanyAndAdmin = async (companyName: string, subdomain: st
     tenant_id: companyData.id
   }]);
   if (profileError) throw profileError;
+};
+
+export const registerSuperAdminProfile = async (name: string, email: string, userId: string) => {
+  const { error } = await supabase.from('profiles').upsert([{ id: userId, name, email, role: UserRole.SUPER_ADMIN }]);
+  if (error) throw error;
 };
