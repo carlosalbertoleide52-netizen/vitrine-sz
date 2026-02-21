@@ -84,7 +84,7 @@ const LandingPage: React.FC = () => {
                 <Sparkles size={22} className="opacity-80" />
               </Link>
               <button className="bg-white text-slate-900 border-2 border-slate-100 px-10 py-5 rounded-2xl text-lg font-black hover:border-slate-900 transition-all active:scale-95">
-                Agendar Demo
+                14 dias para testar
               </button>
             </div>
           </div>

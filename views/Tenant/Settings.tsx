@@ -114,21 +114,28 @@ const Settings: React.FC = () => {
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <Phone size={14} /> WhatsApp de Vendas
                 </label>
-                <div className="relative">
-                  <input 
-                    placeholder="DDD + Número"
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-500 transition-all pr-32" 
-                    value={formData.whatsapp} 
-                    onChange={e => setFormData({...formData, whatsapp: e.target.value.replace(/\D/g, '')})} 
-                  />
-                  <button 
-                    type="button"
-                    onClick={testWhatsapp}
-                    className="absolute right-2 top-2 bottom-2 bg-emerald-500 text-white px-4 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-1 hover:bg-emerald-600 transition-all"
-                  >
-                    <MessageCircle size={12} /> Testar
-                  </button>
-                </div>
+               <div className="flex flex-col sm:flex-row gap-2">
+  <input
+    placeholder="DDD + Número"
+    className="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+    value={formData.whatsapp}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        whatsapp: e.target.value.replace(/\D/g, "")
+      })
+    }
+  />
+
+  <button
+    type="button"
+    onClick={testWhatsapp}
+    className="w-full sm:w-auto bg-emerald-500 text-white px-4 py-3 rounded-xl font-black text-[12px] flex items-center justify-center gap-1"
+  >
+    <MessageCircle size={12} />
+    Testar
+  </button>
+</div>
               </div>
             </div>
 

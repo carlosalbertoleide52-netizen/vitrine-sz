@@ -205,7 +205,7 @@ const RegisterPage: React.FC = () => {
                     <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl mb-4 flex items-center gap-3">
                       <Sparkles size={18} className="text-amber-600 shrink-0" />
                       <p className="text-[10px] font-black text-amber-800 uppercase tracking-widest">
-                        Atenção: Use um e-mail diferente do anterior.
+                        ⚠️ Utilize um e-mail válido. Ele será usado para ativação e comunicação após o período de teste.
                       </p>
                     </div>
 
