@@ -137,7 +137,7 @@ const Storefront: React.FC = () => {
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125" 
                         alt={p.name} 
                       />
-                      <div className="absolute top-4 right-4">
+                      <div className="absolute top-2 right-2 flex flex-col gap-2">
                         <button className="text-slate-400 hover:text-red-500 transition-colors">
                           <Heart size={20} strokeWidth={1.5} />
                         </button>
