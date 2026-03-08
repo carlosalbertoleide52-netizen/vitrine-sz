@@ -36,6 +36,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     storage: safeStorage, // Use our protected storage wrapper
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
+    flowType: 'pkce',
   }
 });
