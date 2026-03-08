@@ -93,14 +93,19 @@ const AppContent: React.FC = () => {
 
 export const App: React.FC = () => {
   const getHashPath = () => {
-    try {
-      let hash = window.location.hash.replace('#', '') || '/';
-      if (!hash.startsWith('/')) hash = '/' + hash;
-      return hash;
-    } catch (e) {
-      // If access to location.hash is denied, default to root
-      return '/';
-    }
+  try {
+    // Primeiro tenta o pathname real (Vercel sem hash)
+    const pathname = window.location.pathname;
+    if (pathname && pathname !== '/') return pathname;
+    
+    // Depois tenta o hash (modo antigo)
+    let hash = window.location.hash.replace('#', '') || '/';
+    if (!hash.startsWith('/')) hash = '/' + hash;
+    return hash;
+  } catch (e) {
+    return '/';
+  }
+};
   };
 
   const [path, setPath] = useState(getHashPath());
