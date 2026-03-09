@@ -194,7 +194,6 @@ export const App: React.FC = () => {
       setCompany(null);
       setPath('/');
     }
-  };
 
   return (
     <RouterContext.Provider value={{ path, params, navigate }}>
