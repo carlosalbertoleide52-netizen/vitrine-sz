@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar, { useIsMobile } from '../../components/Sidebar';
 import { useAuth, useRouter } from '../../App';
 import { getTenantProducts, createProduct, deleteProduct, uploadProductImage, analyzeProductImage, updateProduct } from '../../store';
 import { Product } from '../../types';
 import { ShoppingBag, Loader2, Trash2, X, Edit3, Camera, Sparkles, Package, Check, ExternalLink, AlertCircle, Database, Zap, Link2, RefreshCw, Info } from 'lucide-react';
 
 const TenantDashboard: React.FC = () => {
+  const isMobile = useIsMobile();
+  const isCompact = useIsMobile(1100);
   const { company } = useAuth();
   const { navigate } = useRouter();
   
@@ -151,7 +153,7 @@ const TenantDashboard: React.FC = () => {
   return (
     <div className="flex bg-slate-50 min-h-screen font-['Inter']">
       <Sidebar />
-      <main className="ml-64 flex-1 p-8 pb-24">
+      <main className={`flex-1 p-8 pb-24 ${isMobile ? 'mt-16' : 'ml-64'}`}>
         
         {errorMessage && (
           <div className="mb-8 p-6 bg-indigo-50 border-2 border-indigo-100 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6 animate-in slide-in-from-top duration-300 shadow-lg">
@@ -186,19 +188,19 @@ const TenantDashboard: React.FC = () => {
               }`}
             >
               {copySuccess ? <Check size={18} /> : <Link2 size={18} />}
-              {copySuccess ? 'Copiado!' : 'Copiar Link'}
+              {!isCompact && (copySuccess ? 'Copiado!' : 'Copiar Link')}
             </button>
              <button 
               onClick={() => navigate(`/loja/${company?.subdomain}`)}
               className="bg-indigo-600 text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-xl shadow-indigo-100"
             >
-              <ExternalLink size={18} /> Ver Vitrine
+              <ExternalLink size={18} />{!isCompact && ' Ver Vitrine'}
             </button>
              <button 
               onClick={() => { resetForm(); setIsAdding(true); }} 
               className="bg-white text-slate-900 border border-slate-200 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm"
             >
-              <Sparkles size={18} className="text-indigo-600" /> IA + Foto
+              <Sparkles size={18} className="text-indigo-600" />{!isCompact && ' IA + Foto'}
             </button>
           </div>
         </header>

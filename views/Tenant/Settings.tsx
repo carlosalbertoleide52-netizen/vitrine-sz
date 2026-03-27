@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar, { useIsMobile } from '../../components/Sidebar';
 import { useAuth } from '../../App';
 import { updateCompany } from '../../store';
 import { Save, Phone, Type, CheckCircle, Loader2, MessageCircle, AlertCircle } from 'lucide-react';
 
 const Settings: React.FC = () => {
+  const isMobile = useIsMobile();
   const { company, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -68,7 +69,7 @@ const Settings: React.FC = () => {
     return (
       <div className="flex bg-slate-50 min-h-screen">
         <Sidebar />
-        <main className="ml-64 flex-1 p-8 flex items-center justify-center">
+        <main className={`flex-1 p-8 flex items-center justify-center ${isMobile ? 'mt-16' : 'ml-64'}`}>
           <Loader2 className="animate-spin text-blue-600" size={32} />
         </main>
       </div>
@@ -78,7 +79,7 @@ const Settings: React.FC = () => {
   return (
     <div className="flex bg-slate-50 min-h-screen font-['Inter']">
       <Sidebar />
-      <main className="ml-64 flex-1 p-8">
+      <main className={`flex-1 p-8 ${isMobile ? 'mt-16' : 'ml-64'}`}>
         <header className="mb-12">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Configurações</h1>
           <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Personalize sua vitrine de vendas</p>

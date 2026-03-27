@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar, { useIsMobile } from '../../components/Sidebar';
 import { getCompanies, updateCompanyStatus, getProfiles } from '../../store';
 import { Company, CompanyStatus, User } from '../../types';
 import { Users, Building2, BarChart3, Search, CheckCircle, XCircle, ShieldCheck, RefreshCcw, Mail, Calendar } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const SuperAdminDashboard: React.FC = () => {
+  const isMobile = useIsMobile();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [profiles, setProfiles] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,7 +75,7 @@ const SuperAdminDashboard: React.FC = () => {
   return (
     <div className="flex bg-slate-50 min-h-screen font-['Inter']">
       <Sidebar />
-      <main className="ml-64 flex-1 p-8 pb-20">
+      <main className={`flex-1 p-8 pb-20 ${isMobile ? 'mt-16' : 'ml-64'}`}>
         
         {/* Banner de Status Master */}
         <div className="mb-10 bg-gradient-to-r from-blue-700 to-indigo-900 rounded-[2.5rem] p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
