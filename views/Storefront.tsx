@@ -125,12 +125,13 @@ const Storefront: React.FC = () => {
                 <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Aguardando novos lançamentos.</p>
               </div>
             ) : (
+              <>
+              <p className="text-center text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] mb-8">Quer saber mais? Clique no produto!</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 {products.map(p => (
-                  <div key={p.id} className="group flex flex-col bg-white transition-all duration-300">
-                    <div 
-                      onClick={() => setSelectedProduct(p)}
-                      className="aspect-square bg-white relative overflow-hidden rounded-2xl border border-slate-100/60 shadow-sm cursor-pointer"
+                  <div key={p.id} onClick={() => setSelectedProduct(p)} className="group flex flex-col bg-white transition-all duration-300 cursor-pointer">
+                    <div
+                      className="aspect-square bg-white relative overflow-hidden rounded-2xl border border-slate-100/60 shadow-sm"
                     >
                       <img 
                         src={p.imageUrl} 
@@ -155,8 +156,8 @@ const Storefront: React.FC = () => {
                       <div className="mt-8 flex items-center justify-between border-t border-slate-50 pt-4">
                         <p className="text-slate-900 font-black text-base tracking-tighter">R$ {p.price.toFixed(2)}</p>
                         
-                        <button 
-                          onClick={() => handleWhatsApp(p)} 
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleWhatsApp(p); }}
                           className="bg-indigo-600 text-white p-2.5 rounded-xl hover:bg-emerald-500 transition-all shadow-md shadow-indigo-100"
                           title="Chamar no WhatsApp"
                         >
@@ -167,6 +168,7 @@ const Storefront: React.FC = () => {
                   </div>
                 ))}
               </div>
+              </>
             )}
           </main>
         </>
@@ -233,6 +235,13 @@ const Storefront: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <button
+            onClick={() => setSelectedProduct(null)}
+            className="mt-12 flex items-center gap-2 text-slate-400 hover:text-indigo-600 transition-colors font-black text-[10px] uppercase tracking-widest group"
+          >
+            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Voltar para a Vitrine
+          </button>
         </main>
       )}
       
