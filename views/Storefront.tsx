@@ -693,7 +693,7 @@ const Storefront: React.FC = () => {
               </div>
             ) : (
               <>
-              <p className="text-center text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] mb-8">Quer saber mais? Clique no produto!</p>
+              <p className="text-center text-slate-700 font-bold text-[10px] uppercase tracking-[0.3em] mb-8">Quer saber mais? Clique no produto!</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                 {products.map(p => (
                   <div key={p.id} onClick={() => { setSelectedProduct(p); setDetailQuantity(1); }} className="group flex flex-col bg-white transition-all duration-300 cursor-pointer">
