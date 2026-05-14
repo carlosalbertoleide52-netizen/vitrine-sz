@@ -2,12 +2,13 @@
 import { Company, User, CompanyStatus, UserRole, Product } from './types';
 import { supabase } from './supabaseClient';
 import { GoogleGenAI, Type } from "@google/genai";
+import { canAccessStorefront, normalizeCompanyStatus } from './tenantAccess';
 
 const mapCompany = (data: any): Company => ({
   id: data.id,
   name: data.name,
   subdomain: (data.subdomain || '').toLowerCase(),
-  status: data.status,
+  status: normalizeCompanyStatus(data.status),
   createdAt: data.created_at || data.createdAt,
   logoUrl: data.logo_url || data.logoUrl,
   heroUrl: data.hero_url || data.heroUrl,
@@ -94,6 +95,11 @@ export const uploadProductImage = async (tenantId: string, file: File): Promise<
 };
 
 export const getTenantProducts = async (tenantId: string): Promise<Product[]> => {
+  const company = await getCompanyById(tenantId);
+  if (!company || !canAccessStorefront(company.status)) {
+    throw new Error('STORE_UNAVAILABLE');
+  }
+
   const { data, error } = await supabase.from('products').select('*').eq('tenant_id', tenantId).order('created_at', { ascending: false });
   if (error) throw error;
   return (data || []).map((d: any) => ({
@@ -159,8 +165,10 @@ export const deleteProduct = async (id: string) => {
 export const getCompanyBySubdomain = async (subdomain: string): Promise<{data: Company | null, error: any}> => {
   const { data, error } = await supabase.from('companies').select('*').eq('subdomain', subdomain.toLowerCase()).maybeSingle();
   if (error) return { data: null, error };
-  return { data: data ? mapCompany(data) : null, error: null };
-}
+  const company = data ? mapCompany(data) : null;
+  if (!company) return { data: null, error: null };
+  return { data: company, error: null };
+};
 
 
 export const generateSafeSubdomain = (name: string) => {

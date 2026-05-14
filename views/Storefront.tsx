@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { getCompanyBySubdomain, getTenantProducts } from '../store';
 import { Company, Product } from '../types';
-import { ShoppingBag, MessageCircle, Phone, Package, ShieldAlert, AlertTriangle, RefreshCw, Copy, Check, Terminal, LayoutDashboard, ArrowLeft, Database, SearchX, Heart, ChevronLeft, Minus, Plus, Trash2, MapPin, Loader2, RotateCcw, ArrowRight } from 'lucide-react';
+import { ShoppingBag, MessageCircle, Package, SearchX, Heart, ChevronLeft, Minus, Plus, Trash2, MapPin, Loader2, RotateCcw, ArrowRight, ShieldAlert } from 'lucide-react';
 import { useRouter, Link } from '../App';
+import { canAccessStorefront, normalizeCompanyStatus } from '../tenantAccess';
 
 interface CartItem {
   product: Product;
@@ -31,6 +32,7 @@ const EMPTY_ADDRESS: Address = {
 };
 
 type CepStatus = 'idle' | 'loading' | 'success' | 'error';
+type StoreAvailability = 'loading' | 'ready' | 'missing' | 'blocked' | 'error';
 
 const formatCep = (value: string): string => {
   const digits = value.replace(/\D/g, '').slice(0, 8);
@@ -54,6 +56,7 @@ const Storefront: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
+  const [availability, setAvailability] = useState<StoreAvailability>('loading');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const cartStorageKey = subdomain ? `vitrine_cart_${subdomain}` : null;
@@ -84,35 +87,56 @@ const Storefront: React.FC = () => {
 
   const load = async () => {
     if (!subdomain) {
+      setAvailability('missing');
       setLoading(false);
       return;
     }
     
     setLoading(true);
     setError(null);
+    setAvailability('loading');
     try {
       const { data: comp, error: compError } = await getCompanyBySubdomain(subdomain);
       
       if (compError) {
         setError(compError);
+        setAvailability('error');
         setLoading(false);
         return;
       }
 
-      if (comp) {
-        setCompany(comp);
-        try {
-          const prods = await getTenantProducts(comp.id);
-          setProducts(prods || []);
-        } catch (prodErr: any) {
-          console.error("Erro ao carregar produtos:", prodErr);
-          setError({ message: "Acesso aos produtos bloqueado.", code: "RLS_PRODS" });
-        }
-      } else {
+      if (!comp) {
         setCompany(null);
+        setProducts([]);
+        setAvailability('missing');
+        return;
+      }
+
+      setCompany(comp);
+
+      if (!canAccessStorefront(comp.status)) {
+        setProducts([]);
+        setAvailability('blocked');
+        return;
+      }
+
+      try {
+        const prods = await getTenantProducts(comp.id);
+        setProducts(prods || []);
+        setAvailability('ready');
+      } catch (prodErr: any) {
+        console.error("Erro ao carregar produtos:", prodErr);
+        if (prodErr?.message === 'STORE_UNAVAILABLE') {
+          setProducts([]);
+          setAvailability('blocked');
+          return;
+        }
+        setError({ message: "Acesso aos produtos bloqueado.", code: "RLS_PRODS" });
+        setAvailability('error');
       }
     } catch (err: any) {
       setError(err);
+      setAvailability('error');
     } finally {
       setLoading(false);
     }
@@ -121,6 +145,14 @@ const Storefront: React.FC = () => {
   useEffect(() => { 
     if (subdomain) load(); 
   }, [subdomain]);
+
+  useEffect(() => {
+    if (availability !== 'blocked') return;
+    setCartItems([]);
+    setIsCartOpen(false);
+    setShowCheckout(false);
+    setSelectedProduct(null);
+  }, [availability]);
 
   const handleWhatsApp = (p: Product) => {
     if (!company) return;
@@ -317,7 +349,34 @@ const Storefront: React.FC = () => {
     );
   }
 
-  if (error || (!company && subdomain)) {
+  if (availability === 'blocked' && company) {
+    const normalizedStatus = normalizeCompanyStatus(company.status);
+
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.12),_transparent_35%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_100%)] flex items-center justify-center p-6 font-['Inter']">
+        <div className="max-w-2xl w-full bg-white/95 backdrop-blur rounded-[3rem] p-10 md:p-14 shadow-2xl border border-white text-center">
+          <div className="w-20 h-20 rounded-[2rem] bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-8 shadow-lg shadow-amber-100">
+            <ShieldAlert size={36} />
+          </div>
+          <p className="text-[11px] font-black uppercase tracking-[0.35em] text-amber-600 mb-4">Acesso Temporariamente Bloqueado</p>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-4">Esta loja está temporariamente indisponível.</h1>
+          <p className="text-slate-500 text-base leading-relaxed max-w-xl mx-auto">
+            A vitrine de <span className="font-black text-slate-800">{company.name}</span> não está disponível no momento. Produtos, carrinho e páginas internas permanecem protegidos até a reativação da empresa.
+          </p>
+          <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-slate-100 px-5 py-3 text-[11px] font-black uppercase tracking-[0.25em] text-slate-500">
+            Status atual: {normalizedStatus}
+          </div>
+          <div className="mt-10 flex justify-center">
+            <button onClick={() => navigate('/')} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-slate-700 transition-all">
+              Voltar ao início
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || availability === 'missing' || (!company && subdomain)) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-['Inter']">
         <div className="max-w-xl w-full bg-white rounded-[3rem] p-12 shadow-2xl border border-slate-100 text-center">

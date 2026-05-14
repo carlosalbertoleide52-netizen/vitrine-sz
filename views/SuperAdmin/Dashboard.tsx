@@ -5,6 +5,7 @@ import { getCompanies, updateCompanyStatus, getProfiles } from '../../store';
 import { Company, CompanyStatus, User } from '../../types';
 import { Users, Building2, BarChart3, Search, CheckCircle, XCircle, ShieldCheck, RefreshCcw, Mail, Calendar } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { normalizeCompanyStatus } from '../../tenantAccess';
 
 const SuperAdminDashboard: React.FC = () => {
   const isMobile = useIsMobile();
@@ -59,6 +60,20 @@ const SuperAdminDashboard: React.FC = () => {
     u.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     u.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const getStatusLabel = (status: CompanyStatus) => {
+    const normalized = normalizeCompanyStatus(status);
+    const labels: Record<CompanyStatus, string> = {
+      [CompanyStatus.ACTIVE]: 'Ativo',
+      [CompanyStatus.SUSPENDED]: 'Suspenso',
+      [CompanyStatus.CANCELED]: 'Cancelado',
+      [CompanyStatus.DELINQUENT]: 'Inadimplente',
+      [CompanyStatus.TEST]: 'Teste',
+      [CompanyStatus.INACTIVE]: 'Inativo',
+    };
+
+    return labels[normalized];
+  };
 
   if (isLoading) {
     return (
@@ -174,14 +189,14 @@ const SuperAdminDashboard: React.FC = () => {
                            {c.subdomain}.vitrine.com
                          </span>
                       </td>
-                      <td className="px-10 py-7">
-                        <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                          c.status === CompanyStatus.ACTIVE ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
-                        }`}>
-                          <div className={`w-2 h-2 rounded-full ${c.status === CompanyStatus.ACTIVE ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></div>
-                          {c.status === CompanyStatus.ACTIVE ? 'Operando' : 'Suspenso'}
-                        </span>
-                      </td>
+	                      <td className="px-10 py-7">
+	                        <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ${
+	                          c.status === CompanyStatus.ACTIVE ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+	                        }`}>
+	                          <div className={`w-2 h-2 rounded-full ${c.status === CompanyStatus.ACTIVE ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></div>
+	                          {getStatusLabel(c.status)}
+	                        </span>
+	                      </td>
                       <td className="px-10 py-7 text-right">
                         <button 
                           onClick={() => toggleStatus(c.id)}

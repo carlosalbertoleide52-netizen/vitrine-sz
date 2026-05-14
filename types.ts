@@ -6,9 +6,12 @@ export enum UserRole {
 }
 
 export enum CompanyStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  PENDING = 'PENDING'
+  ACTIVE = 'ativo',
+  SUSPENDED = 'suspenso',
+  CANCELED = 'cancelado',
+  DELINQUENT = 'inadimplente',
+  TEST = 'teste',
+  INACTIVE = 'inativo'
 }
 
 export interface Company {
