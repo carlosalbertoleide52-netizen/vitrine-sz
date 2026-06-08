@@ -53,7 +53,7 @@ const LandingPage: React.FC = () => {
             <>
               <Link to="/login" className="text-slate-900 font-bold text-sm hover:text-blue-600 transition-colors">Entrar</Link>
               <Link to="/signup" className="bg-slate-900 text-white px-8 py-3.5 rounded-full font-black text-sm hover:bg-slate-800 transition-all active:scale-95 shadow-xl shadow-slate-200">
-                Começar Grátis
+                14 dias Grátis
               </Link>
             </>
           )}
@@ -84,7 +84,7 @@ const LandingPage: React.FC = () => {
                 <Sparkles size={22} className="opacity-80" />
               </Link>
               <button className="bg-white text-slate-900 border-2 border-slate-100 px-10 py-5 rounded-2xl text-lg font-black hover:border-slate-900 transition-all active:scale-95">
-                14 dias para testar
+                Valor Mensal R$ 39,60
               </button>
             </div>
           </div>
@@ -120,9 +120,7 @@ const LandingPage: React.FC = () => {
                         <div className="w-32 h-4 bg-slate-100 rounded-full"></div>
                         <div className="w-24 h-3 bg-slate-50 rounded-full"></div>
                      </div>
-                     <div className="text-right">
-                        <p className="text-3xl font-black text-[#0f172a] whitespace-nowrap">R$ 24,90</p>
-                     </div>
+                     
                   </div>
                </div>
                
@@ -141,7 +139,7 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center mb-10 shadow-xl shadow-emerald-200">
               <Store className="text-white" size={32} />
             </div>
-            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">Vitrine Profissional</h3>
+            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">Vitrine ProfissionalCa</h3>
             <p className="text-slate-500 font-medium leading-relaxed">
               Crie um catálogo completo com fotos, descrições e preços. Seus produtos sempre organizados e acessíveis.
             </p>
