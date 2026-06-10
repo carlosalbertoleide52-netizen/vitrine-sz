@@ -139,7 +139,7 @@ const LandingPage: React.FC = () => {
             <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center mb-10 shadow-xl shadow-emerald-200">
               <Store className="text-white" size={32} />
             </div>
-            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">Vitrine ProfissionalCa</h3>
+            <h3 className="text-2xl font-black text-slate-900 mb-5 tracking-tight">Vitrine Profissional</h3>
             <p className="text-slate-500 font-medium leading-relaxed">
               Crie um catálogo completo com fotos, descrições e preços. Seus produtos sempre organizados e acessíveis.
             </p>
