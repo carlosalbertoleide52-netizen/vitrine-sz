@@ -7,6 +7,7 @@ import { Link, Navigate } from '../App';
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -71,14 +72,23 @@ const LoginPage: React.FC = () => {
             value={email} 
             onChange={e => setEmail(e.target.value)} 
           />
-          <input 
-            type="password" 
-            required 
-            placeholder="Senha" 
-            className="w-full px-6 py-4 rounded-2xl border border-slate-100 bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500 font-bold" 
-            value={password} 
-            onChange={e => setPassword(e.target.value)} 
-          />
+          <div className="relative">
+            <input 
+              type={showPassword ? 'text' : 'password'} 
+              required 
+              placeholder="Senha" 
+              className="w-full pr-24 px-6 py-4 rounded-2xl border border-slate-100 bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500 font-bold" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(prev => !prev)}
+              className="absolute inset-y-0 right-4 flex items-center text-sm font-bold text-slate-500 hover:text-slate-900"
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
           
           <button 
             type="submit" 
