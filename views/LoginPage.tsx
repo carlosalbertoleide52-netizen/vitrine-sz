@@ -103,7 +103,10 @@ const LoginPage: React.FC = () => {
         <div className="mt-8 pt-8 border-t border-slate-50 text-center">
           <p className="text-slate-400 font-medium text-sm">
             Não consegue entrar? <br/>
-            <Link to="/signup" className="text-blue-600 font-black hover:underline mt-2 inline-block">Criar nova conta agora</Link>
+            <Link to="/forgot-password" className="text-blue-600 font-black hover:underline mt-2 inline-block">Recupere sua senha</Link>
+          </p>
+          <p className="text-slate-400 font-medium text-sm mt-6">
+            <Link to="/signup" className="text-blue-600 font-black hover:underline inline-block">Criar nova conta agora</Link>
           </p>
         </div>
       </div>

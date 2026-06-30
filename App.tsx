@@ -6,6 +6,8 @@ import { getUserProfile, getCompanyById } from './store';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
+import ForgotPasswordPage from './views/ForgotPasswordPage';
+import ResetPasswordPage from './views/ResetPasswordPage';
 import SuperAdminDashboard from './views/SuperAdmin/Dashboard';
 import TenantDashboard from './views/Tenant/Dashboard';
 import Storefront from './views/Storefront';
@@ -78,6 +80,8 @@ const AppContent: React.FC = () => {
   if (cleanPath === '/') return <LandingPage />;
   if (cleanPath === '/login') return user ? <Navigate to="/dashboard" /> : <LoginPage />;
   if (cleanPath === '/signup') return user ? <Navigate to="/dashboard" /> : <RegisterPage />;
+  if (cleanPath === '/forgot-password') return <ForgotPasswordPage />;
+  if (cleanPath === '/reset-password') return <ResetPasswordPage />;
   if (cleanPath === '/setup-master') return <SetupMaster />;
   
   if (cleanPath.startsWith('/loja/')) return <Storefront />;
@@ -132,7 +136,9 @@ export const App: React.FC = () => {
     refreshProfile().finally(() => setIsLoading(false));
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+      } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setCompany(null);
       } else {
